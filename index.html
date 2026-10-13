@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Test page: Human Factor embed trial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0B1F5C;
+    --pink: #E6007E;
+    --blue: #1E7BE0;
+    --ink: #1C2440;
+    --muted: #5C6585;
+    --line: #DCE1EE;
+    --bg: #F5F7FC;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Montserrat", Arial, Helvetica, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.6;
+  }
+  .hf-banner {
+    background: var(--pink);
+    color: #fff;
+    text-align: center;
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+  }
+  .hf-wrap { max-width: 860px; margin: 0 auto; padding: 3rem 1.5rem 4rem; }
+  .hf-hero { background: var(--navy); color: #fff; padding: 3.5rem 1.5rem; }
+  .hf-hero .hf-wrap { padding: 0 1.5rem; }
+  .hf-hero h1 { font-weight: 300; font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.1; margin: 0 0 1rem; }
+  .hf-hero p { max-width: 60ch; margin: 0; opacity: 0.85; }
+  h2 { font-weight: 500; font-size: 1.6rem; color: var(--navy); margin: 0 0 0.75rem; }
+  p { max-width: 68ch; }
+  .hf-chart-card { background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: 1.5rem; margin: 2rem 0; }
+  .hf-chart-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+  .hf-chart-head h3 { margin: 0; font-size: 1rem; font-weight: 600; color: var(--navy); }
+  .hf-toggle { display: inline-flex; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+  .hf-toggle button {
+    font: inherit; font-size: 0.85rem; border: 0; background: #fff; color: var(--ink);
+    padding: 0.4rem 0.9rem; cursor: pointer;
+  }
+  .hf-toggle button[aria-pressed="true"] { background: var(--navy); color: #fff; }
+  .hf-toggle button:focus-visible, .hf-cta:focus-visible { outline: 3px solid var(--pink); outline-offset: 2px; }
+  #hf-chart { width: 100%; height: auto; display: block; }
+  .hf-tip {
+    position: fixed; pointer-events: none; background: var(--navy); color: #fff;
+    font-size: 0.8rem; padding: 0.35rem 0.6rem; border-radius: 4px; opacity: 0; transition: opacity .1s;
+  }
+  .hf-note { font-size: 0.85rem; color: var(--muted); margin-top: 0.75rem; }
+  .hf-cta {
+    display: inline-block; background: var(--pink); color: #fff; text-decoration: none;
+    padding: 0.75rem 1.4rem; border-radius: 4px; font-weight: 500; margin-top: 0.5rem;
+  }
+  .hf-checklist { background: #fff; border-left: 4px solid var(--blue); padding: 1rem 1.25rem; margin-top: 3rem; }
+  .hf-checklist li { margin-bottom: 0.4rem; }
+  @media (prefers-reduced-motion: reduce) { .hf-bar { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<div class="hf-banner">Test page with fictional data. Not for publication.</div>
+
+<header class="hf-hero">
+  <div class="hf-wrap">
+    <h1>The Human Factor: embed test</h1>
+    <p>This page checks that a self-contained report hosted on GitHub Pages displays and behaves correctly inside a Webflow page.</p>
+  </div>
+</header>
+
+<main class="hf-wrap">
+  <h2>Exposure varies across countries</h2>
+  <p>The chart below uses invented figures. Switch between the two measures to check that the page's scripts run inside the frame, and hover over a bar to check the tooltip.</p>
+
+  <div class="hf-chart-card">
+    <div class="hf-chart-head">
+      <h3 id="hf-chart-title">Capital in firms with no women executives, % (fictional)</h3>
+      <div class="hf-toggle" role="group" aria-label="Choose measure">
+        <button type="button" data-key="exec" aria-pressed="true">Executives</button>
+        <button type="button" data-key="board" aria-pressed="false">Board</button>
+      </div>
+    </div>
+    <svg id="hf-chart" viewBox="0 0 640 300" role="img" aria-labelledby="hf-chart-title"></svg>
+    <p class="hf-note">Source: fictional test data.</p>
+  </div>
+
+  <h2>Leaving the frame</h2>
+  <p>The button below should open denominator.com in the full browser window, replacing the Webflow page. If it opens inside the frame instead, the link target needs fixing in the real report.</p>
+  <a class="hf-cta" href="https://www.denominator.com" target="_top">Visit Denominator</a>
+
+  <div class="hf-checklist">
+    <p><strong>What to check</strong></p>
+    <ul>
+      <li>The fonts load and the page fills the width of the frame.</li>
+      <li>The toggle switches the chart between Executives and Board.</li>
+      <li>The tooltip appears in the right place when hovering a bar.</li>
+      <li>You can scroll to this box on desktop and mobile, with no double scroll bars.</li>
+      <li>The button opens denominator.com in the full window.</li>
+    </ul>
+  </div>
+</main>
+
+<div class="hf-tip" id="hf-tip" role="tooltip"></div>
+
+<script>
+  var data = {
+    exec:  [{c: "Denmark", v: 11.4}, {c: "Finland", v: 6.2}, {c: "Norway", v: 9.8}, {c: "Sweden", v: 9.1}],
+    board: [{c: "Denmark", v: 1.1},  {c: "Finland", v: 0.5}, {c: "Norway", v: 0.8}, {c: "Sweden", v: 0.6}]
+  };
+  var svg = document.getElementById("hf-chart");
+  var tip = document.getElementById("hf-tip");
+  var NS = "http://www.w3.org/2000/svg";
+  var W = 640, H = 300, pad = {t: 20, r: 10, b: 40, l: 44};
+
+  function el(name, attrs, text) {
+    var e = document.createElementNS(NS, name);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (text !== undefined) e.textContent = text;
+    return e;
+  }
+
+  function draw(key) {
+    var rows = data[key];
+    var max = key === "exec" ? 15 : 1.5;
+    var steps = 3;
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    var innerH = H - pad.t - pad.b, innerW = W - pad.l - pad.r;
+
+    for (var i = 0; i <= steps; i++) {
+      var val = max / steps * i;
+      var y = pad.t + innerH - innerH * (val / max);
+      svg.appendChild(el("line", {x1: pad.l, x2: W - pad.r, y1: y, y2: y, stroke: "#DCE1EE"}));
+      svg.appendChild(el("text", {x: pad.l - 8, y: y + 4, "text-anchor": "end", "font-size": 12, fill: "#5C6585"}, val.toFixed(key === "exec" ? 0 : 1) + "%"));
+    }
+
+    var band = innerW / rows.length, bw = band * 0.5;
+    rows.forEach(function (d, i) {
+      var h = innerH * (d.v / max);
+      var x = pad.l + band * i + (band - bw) / 2;
+      var y = pad.t + innerH - h;
+      var bar = el("rect", {x: x, y: y, width: bw, height: h, rx: 2, fill: i === 0 ? "#E6007E" : "#0B1F5C", tabindex: 0, "class": "hf-bar"});
+      bar.setAttribute("aria-label", d.c + ": " + d.v + "%");
+      function show(evt) {
+        tip.textContent = d.c + ": " + d.v.toFixed(1) + "%";
+        var r = bar.getBoundingClientRect();
+        tip.style.left = (r.left + r.width / 2 - tip.offsetWidth / 2) + "px";
+        tip.style.top = (r.top - tip.offsetHeight - 8) + "px";
+        tip.style.opacity = 1;
+      }
+      function hide() { tip.style.opacity = 0; }
+      bar.addEventListener("mouseenter", show);
+      bar.addEventListener("focus", show);
+      bar.addEventListener("mouseleave", hide);
+      bar.addEventListener("blur", hide);
+      svg.appendChild(bar);
+      svg.appendChild(el("text", {x: x + bw / 2, y: y - 6, "text-anchor": "middle", "font-size": 13, "font-weight": 600, fill: "#1C2440"}, d.v.toFixed(1) + "%"));
+      svg.appendChild(el("text", {x: x + bw / 2, y: H - pad.b + 22, "text-anchor": "middle", "font-size": 13, fill: "#1C2440"}, d.c));
+    });
+  }
+
+  document.querySelectorAll(".hf-toggle button").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      document.querySelectorAll(".hf-toggle button").forEach(function (b) { b.setAttribute("aria-pressed", "false"); });
+      btn.setAttribute("aria-pressed", "true");
+      draw(btn.dataset.key);
+    });
+  });
+
+  draw("exec");
+</script>
+</body>
+</html>
